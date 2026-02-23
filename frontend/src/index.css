@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CRITICAL: Do NOT set overflow-x: hidden on html or body.
+   It creates a new scroll container in Safari, which breaks
+   position: fixed — fixed elements scroll with the page instead
+   of staying anchored to the viewport. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  background-color: #f8fafc;
+}
+
+/* #root: plain container — no overflow, no position, no transform.
+   Any of those properties would create a stacking context that
+   clips or repositions fixed descendants. */
+#root {
+  min-height: 100vh;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
