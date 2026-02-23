@@ -119,7 +119,11 @@ const Store = () => {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-10">
             {filteredProducts.map((product) => (
-              <div key={product._id} className="group relative">
+              <div
+                key={product._id}
+                className="group relative cursor-pointer"
+                onClick={() => navigate(`/product/${product._id}`, { state: { product } })}
+              >
                 <div className="aspect-[3/4] rounded-[32px] overflow-hidden bg-unigo-slate-50 mb-6 relative">
                   <img 
                     src={product.thumbnailUrl} 
@@ -132,12 +136,15 @@ const Store = () => {
                     </span>
                   </div>
                   <button 
-                    onClick={() => addToCart({
-                      id: product._id,
-                      title: product.title,
-                      price: product.price,
-                      image: product.thumbnailUrl
-                    })}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart({
+                        id: product._id,
+                        title: product.title,
+                        price: product.price,
+                        image: product.thumbnailUrl
+                      });
+                    }}
                     className="absolute bottom-4 right-4 bg-unigo-black text-unigo-green p-4 rounded-[20px] translate-y-20 group-hover:translate-y-0 transition-transform duration-500 shadow-2xl"
                   >
                     <PlusCircle className="w-5 h-5" />

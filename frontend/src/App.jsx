@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/Home'
 import Cart from './pages/Cart'
 import { CartProvider } from './context/CartContext'
@@ -14,19 +16,24 @@ import Mentors from './pages/Mentors'
 import MentorSession from './pages/MentorSession'
 import Chat from './pages/Chat'
 import Inbox from './pages/Inbox'
+import Checkout from './pages/Checkout'
+import MyGear from './pages/MyGear'
+import StoreDashboard from './pages/StoreDashboard'
+import ProductDetail from './pages/ProductDetail'
 
 // Pages that should NOT show the bottom nav
-const HIDE_NAV_PATHS = ['/chat/'];
+const HIDE_NAV_PATHS = ['/chat/', '/product/'];
 
 function AppContent() {
   const location = useLocation();
   const hideNav = HIDE_NAV_PATHS.some(p => location.pathname.startsWith(p));
 
+  // Pages that are full-screen and must NOT have pb-20 or the bottom nav
+  const isFullScreen = ['/chat/', '/product/'].some(p => location.pathname.startsWith(p));
+
   return (
-    // Outer shell: full-height flex column — this is the layout anchor
     <div className="flex flex-col min-h-screen overflow-x-hidden">
-      {/* Page content scrolls inside here; pb-20 reserves space for the fixed bottom nav */}
-      <main className="flex-1 pb-20">
+      <main className={isFullScreen ? '' : 'flex-1 pb-20'}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
@@ -38,12 +45,27 @@ function AppContent() {
           <Route path="/session/:id" element={<MentorSession />} />
           <Route path="/chat/:id" element={<Chat />} />
           <Route path="/inbox" element={<Inbox />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/my-gear" element={<MyGear />} />
+          <Route path="/store-dashboard" element={<StoreDashboard />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </main>
 
-      {/* Global overlays — always outside page content */}
+      {/* Global overlays */}
       <NotificationToast />
-      {!hideNav && <BottomNav />}
+      {!isFullScreen && <BottomNav />}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="dark"
+        toastClassName="!rounded-2xl !font-black !text-[11px] !uppercase !tracking-widest"
+      />
     </div>
   );
 }

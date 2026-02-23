@@ -12,8 +12,17 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5173',
-  process.env.FRONTEND_URL,  // e.g. https://your-app.vercel.app
-].filter(Boolean); // remove undefined if FRONTEND_URL not set
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+// Health check endpoint for Render monitoring
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
 
 app.use(cors({
   origin: (origin, callback) => {

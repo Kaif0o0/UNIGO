@@ -128,9 +128,12 @@ const Chat = () => {
   };
 
   return (
-    <div className="bg-white font-sans text-unigo-black" style={{ display: 'flex', flexDirection: 'column', height: '100dvh', paddingTop: '73px', paddingBottom: '70px', overflow: 'hidden' }}>
-      {/* Header */}
-      <header className="bg-white px-6 py-4 border-b border-unigo-black/5 flex items-center justify-between shadow-sm fixed top-0 left-0 right-0 z-[9998]">
+    <div
+      className="bg-white font-sans text-unigo-black flex flex-col"
+      style={{ height: '100dvh', overflow: 'hidden' }}
+    >
+      {/* ── Header ── */}
+      <header className="bg-white px-6 py-4 border-b border-unigo-black/5 flex items-center justify-between shadow-sm flex-shrink-0">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate(-1)} className="p-2 hover:bg-unigo-slate-100 rounded-full transition-all">
             <ArrowLeft className="w-5 h-5" />
@@ -175,8 +178,11 @@ const Chat = () => {
         </div>
       </header>
 
-      {/* Messages */}
-      <main className="flex-grow overflow-y-auto p-6 space-y-6 no-scrollbar bg-unigo-slate-50/50">
+      {/* ── Messages — flex-1 so it fills remaining height, only this scrolls ── */}
+      <main
+        className="flex-1 overflow-y-auto p-6 space-y-6 bg-unigo-slate-50/50"
+        style={{ overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' }}
+      >
         <div className="text-center py-8">
           <p className="text-[8px] font-black text-unigo-black/10 uppercase tracking-[0.4em] mb-2">Beginning of Conversation</p>
           <div className="w-8 h-1 bg-unigo-black/5 mx-auto rounded-full"></div>
@@ -207,14 +213,20 @@ const Chat = () => {
         <div ref={scrollRef} />
       </main>
 
-      {/* Input */}
-      <footer className="bg-white px-6 pt-4 pb-4 border-t border-unigo-black/5 shrink-0">
+      {/* ── Input footer — always visible above keyboard ── */}
+      <footer
+        className="bg-white border-t border-unigo-black/5 flex-shrink-0 px-4 pt-3"
+        style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
+      >
         <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto flex gap-4">
           <div className="flex-grow bg-unigo-slate-50 rounded-[24px] px-6 py-2 flex items-center border border-transparent focus-within:border-unigo-black/10 transition-all shadow-inner">
             <input 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type your message..."
+              inputMode="text"
+              enterKeyHint="send"
+              autoComplete="off"
               className="w-full bg-transparent border-none py-4 text-sm focus:ring-0 placeholder:text-unigo-black/20 font-medium"
             />
           </div>

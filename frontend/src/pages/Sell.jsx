@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
@@ -44,7 +45,10 @@ const Sell = () => {
 
     try {
       const token = user?.token;
-      if (!token) throw new Error('Please login to sell');
+      if (!token) {
+        toast.error('Please login to sell', { icon: '🔒' });
+        throw new Error('Please login to sell');
+      }
 
       const config = {
         headers: {
@@ -53,10 +57,13 @@ const Sell = () => {
       };
 
       await axios.post(`${import.meta.env.VITE_API_URL}/api/products`, formData, config);
+      toast.success('Your gear is now live on UniGo Store! 🚀');
       setSuccess(true);
       setTimeout(() => navigate('/store'), 2000);
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      const msg = err.response?.data?.message || err.message;
+      setError(msg);
+      toast.error(msg, { icon: '❌' });
     } finally {
       setLoading(false);
     }

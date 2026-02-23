@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -36,12 +37,16 @@ const Account = () => {
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
+        toast.success('Welcome back! 👋', { icon: '🔓' });
       } else {
         await signup(formData.name, formData.email, formData.password, formData.role);
+        toast.success('Account created! Welcome to UniGo 🎉');
       }
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong');
+      const msg = err.response?.data?.message || 'Something went wrong';
+      setError(msg);
+      toast.error(msg, { icon: '❌' });
     }
   };
 
@@ -57,7 +62,7 @@ const Account = () => {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h1 className="text-xl font-black uppercase tracking-tighter italic">Uni<span className="text-unigo-green">Go</span> ID</h1>
-            <button onClick={logout} className="p-2 hover:bg-unigo-red/10 rounded-full text-unigo-red">
+            <button onClick={() => { logout(); toast.info('Signed out. See you soon! 👋'); }} className="p-2 hover:bg-unigo-red/10 rounded-full text-unigo-red">
               <LogOut className="w-5 h-5" />
             </button>
           </div>
@@ -76,20 +81,26 @@ const Account = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="bg-white p-6 rounded-3xl border border-unigo-black/5 hover:border-unigo-black transition-all cursor-pointer flex items-center justify-between group">
+            <div
+              onClick={() => navigate('/my-gear')}
+              className="bg-white p-6 rounded-3xl border border-unigo-black/5 hover:border-unigo-black transition-all cursor-pointer flex items-center justify-between group"
+            >
               <div className="flex items-center gap-6">
                 <ShoppingBag className="w-5 h-5 text-unigo-black" />
                 <h4 className="font-black text-unigo-black uppercase text-xs tracking-widest">My Gear</h4>
               </div>
-              <ChevronRight className="w-4 h-4 text-unigo-black/20" />
+              <ChevronRight className="w-4 h-4 text-unigo-black/20 group-hover:text-unigo-black transition-colors" />
             </div>
 
-            <div className="bg-white p-6 rounded-3xl border border-unigo-black/5 hover:border-unigo-black transition-all cursor-pointer flex items-center justify-between group">
+            <div
+              onClick={() => navigate('/store-dashboard')}
+              className="bg-white p-6 rounded-3xl border border-unigo-black/5 hover:border-unigo-black transition-all cursor-pointer flex items-center justify-between group"
+            >
               <div className="flex items-center gap-6">
                 <ShieldCheck className="w-5 h-5 text-unigo-black" />
                 <h4 className="font-black text-unigo-black uppercase text-xs tracking-widest">Store Dashboard</h4>
               </div>
-              <ChevronRight className="w-4 h-4 text-unigo-black/20" />
+              <ChevronRight className="w-4 h-4 text-unigo-black/20 group-hover:text-unigo-black transition-colors" />
             </div>
 
             <div className="bg-white p-6 rounded-3xl border border-unigo-black/5 hover:border-unigo-black transition-all cursor-pointer flex items-center justify-between group">

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 import { 
   ArrowLeft, 
   MessageSquare, 
@@ -23,6 +24,7 @@ const MentorSession = () => {
   const handleStartChat = async () => {
     try {
       if (!user) {
+        toast.info('Please login to chat with a mentor', { icon: '🔐' });
         navigate('/account');
         return;
       }
@@ -35,13 +37,14 @@ const MentorSession = () => {
 
       const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/api/chats`, {
         mentorId: id,
-        participantId: mentor.user?._id || mentor.user // Handle both populated and non-populated
+        participantId: mentor.user?._id || mentor.user
       }, config);
 
+      toast.success(`Chat started with ${mentor.name}! 💬`);
       navigate(`/chat/${data._id}`, { state: { chat: data } });
     } catch (error) {
       console.error('CHAT ERROR:', error);
-      alert('Could not start chat. Please try again.');
+      toast.error('Could not start chat. Please try again.', { icon: '❌' });
     }
   };
 

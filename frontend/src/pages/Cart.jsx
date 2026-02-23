@@ -109,7 +109,10 @@ const Cart = () => {
               </div>
               
               <div className="space-y-3">
-                <button className="w-full bg-unigo-green text-unigo-black font-black py-5 rounded-2xl hover:scale-105 transition-all uppercase tracking-widest text-xs">
+                <button
+                  onClick={() => navigate('/checkout')}
+                  className="w-full bg-unigo-green text-unigo-black font-black py-5 rounded-2xl hover:scale-105 transition-all uppercase tracking-widest text-xs"
+                >
                   Checkout
                 </button>
                 <button onClick={() => navigate('/')} className="w-full bg-white/10 text-white font-black py-5 rounded-2xl transition-all uppercase tracking-widest text-xs hover:bg-white/20">
@@ -128,7 +131,10 @@ const Cart = () => {
             <span className="text-[10px] font-black uppercase tracking-widest text-unigo-black/30">Total Bill</span>
             <span className="text-2xl font-black tracking-tighter italic italic">₹{cartTotal.toFixed(2)}</span>
           </div>
-          <button className="bg-unigo-black text-unigo-green font-black px-10 py-4 rounded-2xl uppercase tracking-widest text-xs">
+          <button
+            onClick={() => navigate('/checkout')}
+            className="bg-unigo-black text-unigo-green font-black px-10 py-4 rounded-2xl uppercase tracking-widest text-xs"
+          >
             Pay Now
           </button>
         </div>

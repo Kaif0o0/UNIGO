@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { 
   Menu, 
   Search, 
@@ -60,7 +61,6 @@ const Home = () => {
       type: "Notes",
       price: 49.00,
       oldPrice: 99.00,
-      discount: "50%",
       image: "https://placehold.co/300x400/000000/ffffff?text=Bio+Notes"
     },
     {
@@ -69,7 +69,6 @@ const Home = () => {
       type: "Q&A",
       price: 29.00,
       oldPrice: 59.00,
-      discount: "50%",
       image: "https://placehold.co/300x400/000000/ffffff?text=Botany+Viva"
     }
   ];
@@ -182,7 +181,7 @@ const Home = () => {
 
                   {user && (
                     <button 
-                      onClick={() => { logout(); setIsSidebarOpen(false); }}
+                      onClick={() => { logout(); setIsSidebarOpen(false); toast.info('Signed out. See you soon! 👋'); }}
                       className="w-full flex items-center justify-center gap-3 py-4 bg-unigo-red/10 text-unigo-red rounded-2xl font-black text-[10px] uppercase tracking-widest"
                     >
                       <LogOut className="w-4 h-4" /> Sign Out
@@ -271,7 +270,7 @@ const Home = () => {
           <div className="bg-unigo-black rounded-[40px] p-10 md:p-16 relative overflow-hidden flex flex-col md:flex-row items-center justify-between group">
             <div className="z-10 text-center md:text-left relative">
               <h2 className="text-5xl md:text-7xl font-black text-unigo-green leading-none mb-4 uppercase tracking-tighter italic">BIG SALE</h2>
-              <p className="text-white text-xl font-bold mb-8 uppercase tracking-widest opacity-80">Up to 70% Off All Content</p>
+              <p className="text-white text-xl font-bold mb-8 uppercase tracking-widest opacity-80">Exclusive Study Materials</p>
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 <button 
                   onClick={() => navigate('/account')}
@@ -329,11 +328,12 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {newArrivals.map((item) => (
               <div key={item.id} className="group cursor-pointer">
-                <div className="relative aspect-[3/4] rounded-[40px] overflow-hidden bg-unigo-slate-100 mb-6 border border-transparent group-hover:border-unigo-black transition-all">
+                {/* Clickable image area → product detail */}
+                <div
+                  className="relative aspect-[3/4] rounded-[40px] overflow-hidden bg-unigo-slate-100 mb-6 border border-transparent group-hover:border-unigo-black transition-all"
+                  onClick={() => navigate(`/product/${item.id}`, { state: { product: { ...item, _id: item.id, thumbnailUrl: item.image } } })}
+                >
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute top-6 left-6 bg-unigo-orange text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
-                    {item.discount}
-                  </div>
                 </div>
                 <h4 className="font-black text-sm uppercase mb-1 tracking-tight truncate px-2">{item.title}</h4>
                 <p className="text-[10px] font-bold text-unigo-black/30 uppercase tracking-widest mb-4 px-2">{item.type}</p>
